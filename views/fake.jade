@@ -1,0 +1,17 @@
+doctype html
+html(lang="en")
+	head
+		meta(charset="utf-8")
+		title ::4Chan Monitor::
+		script(src="/socket.io/socket.io.js")
+		script(src="https://code.jquery.com/jquery-2.1.4.min.js")
+		script(src="/js/fake-events.js")
+		script(src="/js/fake.js")
+	body
+		h1 Samantha Fake Events
+		br
+		button(type="button" id="read") Fake Read
+		br  
+		button(type="button" id="door") Fake Alarm(Door Open)
+		br
+		button(type="button" id="driver") Fake Alarm(Driver fails)
