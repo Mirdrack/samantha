@@ -39,7 +39,7 @@ function doorOpenEvent() {
 		event: event,
 	};
 
-	socket.emit('door-open', 'data');
+	socket.emit('door-open', data);
 	return false;
 }
 
