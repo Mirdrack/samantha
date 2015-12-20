@@ -13,5 +13,6 @@ var server = app.listen(config.app.port, function () {
 	console.log('Listening on port %d', server.address().port);
 });
 
+var request = require('request');
 var io = require('socket.io')(server);
-var sockets = require('./sockets')(io);
+var sockets = require('./sockets')(io, request, config);

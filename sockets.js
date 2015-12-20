@@ -1,22 +1,29 @@
-var sockets = function (io) {
+var sockets = function (io, request, config) {
+
 
 	io.on('connection', function (socket) {
 
 		console.log('Client connected');
+		
 
-		socket.on('new-read', function () {
+		socket.on('new-read', function (data) {
 
-			console.log('new-read-server');
-			io.sockets.emit('new-read-server', { message: 'new-read' });
+			request.post(config.endPoints.newRead, { form : data.read }, function (error, response, body) {
+
+				if (!error && response.statusCode == 201) {
+
+					io.sockets.emit('new-read-server', JSON.parse(body));
+				}
+			});
 		});
 
-		socket.on('door-open', function () {
+		socket.on('door-open', function (data) {
 
 			console.log('door-open-server');
 			io.sockets.emit('door-open-server', { message: 'door-open' });
 		});
 
-		socket.on('driver-fails', function () {
+		socket.on('driver-fails', function (data) {
 
 			console.log('driver-fails-server');
 			io.sockets.emit('driver-fails-server', { message: 'driver-fails' });

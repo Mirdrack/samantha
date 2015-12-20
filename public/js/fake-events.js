@@ -3,7 +3,6 @@ socket.on('connect', function(){});
 
 socket.on('new-read-server', function (data) {
 
-	console.log('new-read-server');
 	$('#server-response').html('<h2>' + data.message + '</h2>');
 });
 
