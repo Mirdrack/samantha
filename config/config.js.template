@@ -2,7 +2,9 @@ var config = {};
 
 config.app = {};
 config.app.port =  8000;
+
 config.endPoints = {};
 config.endPoints.newRead = 'http://rea.app/read';
+config.endPoints.newEvent = 'http://rea.app/read';
 
 module.exports = config;

@@ -1,22 +1,10 @@
 $(document).ready(function () {
 
 	$('#read').click(newRedEvent);
+	$('#door').click(doorOpenEvent);
+	$('#driver').click(driverFailEvent); 
 
-	$('#door').click(function () {
-
-		console.log('Event door-open');
-	    socket.emit('door-open', 'The door is open.');
-	    return false;
-	});
-
-	$('#driver').click(function () {
-
-		console.log('Event driver-fails');
-	    socket.emit('driver-fails', 'The driver is failing.');
-	    return false;
-	});
-
-}); 
+});
 
 function newRedEvent() {
 
@@ -36,6 +24,40 @@ function newRedEvent() {
 
 	socket.emit('new-read', data);
 	return false;
+}
+
+function doorOpenEvent() {
+
+	var event = {
+		station_id: 1,
+		alarm_id: 1,
+	};
+
+	var data = {
+		event_type: 'door-open',
+		message: 'The door is open',
+		event: event,
+	};
+
+	socket.emit('door-open', 'data');
+	return false;
+}
+
+function driverFailEvent() {
+
+	var event = {
+		station_id: 1,
+		alarm_id: 2,
+	};
+
+	var data = {
+		event_type: 'driver-fails',
+		message: 'The driver is failing',
+		event: event,
+	};
+
+    socket.emit('driver-fails', data);
+    return false;
 }
 
 function createDecimalData(min, max) {

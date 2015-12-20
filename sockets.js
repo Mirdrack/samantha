@@ -14,19 +14,35 @@ var sockets = function (io, request, config) {
 
 					io.sockets.emit('new-read-server', JSON.parse(body));
 				}
+				else
+					io.sockets.emit('error-server', JSON.parse(body));
 			});
 		});
 
 		socket.on('door-open', function (data) {
 
-			console.log('door-open-server');
-			io.sockets.emit('door-open-server', { message: 'door-open' });
+			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+
+				if (!error && response.statusCode == 201) {
+
+					io.sockets.emit('door-open-server', JSON.parse(body));
+				}
+				else
+					io.sockets.emit('error-server', JSON.parse(body));
+			});
 		});
 
 		socket.on('driver-fails', function (data) {
 
-			console.log('driver-fails-server');
-			io.sockets.emit('driver-fails-server', { message: 'driver-fails' });
+			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+
+				if (!error && response.statusCode == 201) {
+
+					io.sockets.emit('driver-fails-server', JSON.parse(body));
+				}
+				else
+					io.sockets.emit('error-server', JSON.parse(body));
+			});
 		});
 
 		socket.on('disconnect', function () {
