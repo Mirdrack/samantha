@@ -9,9 +9,11 @@ html(lang="en")
 		script(src="/js/fake.js")
 	body
 		h1 Samantha Fake Events
-		br
-		button(type="button" id="read") Fake Read
-		br  
-		button(type="button" id="door") Fake Alarm(Door Open)
-		br
-		button(type="button" id="driver") Fake Alarm(Driver fails)
+		div(id="buttons")
+			button(type="button" id="read") Fake Read
+			br  
+			button(type="button" id="door") Fake Alarm(Door Open)
+			br
+			button(type="button" id="driver") Fake Alarm(Driver fails)
+		div(id="server-response")
+
