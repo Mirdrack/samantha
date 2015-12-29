@@ -15,4 +15,5 @@ var server = app.listen(config.app.port, function () {
 
 var request = require('request');
 var io = require('socket.io')(server);
+io.set('origins', config.origins);
 var sockets = require('./sockets')(io, request, config);
