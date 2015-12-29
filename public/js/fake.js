@@ -8,6 +8,7 @@ $(document).ready(function () {
 
 function newRedEvent() {
 
+	console.log('newRedEvent');
 	var read = {
 		station_id: 1,
 		dynamic_level: createDecimalData(50, 250),

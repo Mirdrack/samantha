@@ -1,4 +1,4 @@
-var socket = io('http://' + window.location.hostname);
+var socket = io('http://' + window.location.hostname + ':8000');
 socket.on('connect', function(){});
 
 socket.on('new-read-server', function (data) {
