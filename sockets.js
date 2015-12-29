@@ -3,9 +3,6 @@ var sockets = function (io, request, config) {
 
 	io.on('connection', function (socket) {
 
-		console.log('Client connected');
-		
-
 		socket.on('new-read', function (data) {
 
 			request.post(config.endPoints.newRead, { form : data.read }, function (error, response, body) {
