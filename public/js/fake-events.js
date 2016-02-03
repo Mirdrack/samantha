@@ -1,4 +1,6 @@
-var socket = io('http://' + window.location.hostname);
+socketURL = 'http://' + window.location.hostname;
+console.log(socketURL);
+var socket = io(socketURL);
 socket.on('connect', function(){});
 
 socket.on('new-read-server', function (data) {
