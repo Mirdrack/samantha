@@ -53,7 +53,10 @@ var sockets = function (io, request, config) {
 					io.sockets.emit('turn-on-server', JSON.parse(body));
 				}
 				else
+				{
+					console.log(body);
 					io.sockets.emit('error-server', JSON.parse(body));
+				}
 			});
 		});
 
