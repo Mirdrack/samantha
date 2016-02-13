@@ -1,9 +1,17 @@
 var sockets = function (io, request, config) {
 
+	var clients = {};
 
 	io.on('connection', function (socket) {
 
-		console.log('Client connected...');
+		if(socket.handshake.query.clientName != undefined) {
+
+			socket.name = socket.handshake.query.clientName;
+			clients[socket.name] = socket;
+			updateClients();
+			console.log(socket.name + ' has been connected');
+		}
+
 
 		socket.on('new-read', function (data) {
 
@@ -75,9 +83,17 @@ var sockets = function (io, request, config) {
 
 		socket.on('disconnect', function () {
 		
-			console.log('Client disconnected');
+			if(!socket.name) return;
+			delete clients[socket.name];
+			console.log(socket.name + 'has been disconnected.')
+			updateClients();
 	  	});
 	});
+
+	function updateClients() {
+
+		io.sockets.emit('clients-update', Object.keys(clients));
+	}
 };
 
 module.exports = sockets;
