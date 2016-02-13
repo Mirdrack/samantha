@@ -10,6 +10,11 @@ var routes = function (app) {
 		res.render('fake.jade');
 	});
 
+	app.get('/clients', function (req, res) {
+
+		res.render('clients.jade');
+	});
+
 };
 
 module.exports = routes;
