@@ -8,12 +8,22 @@ socket.on('new-read-server', function (data) {
 	$('#server-response').html('<h2>' + data.message + '</h2>');
 });
 
-socket.on('door-open-server', function (data) {
+socket.on('alarm-triggered-server', function (data) {
 
 	$('#server-response').html('<h2>' + data.message + '</h2>');
 });
 
 socket.on('driver-fails-server', function (data) {
+
+	$('#server-response').html('<h2>' + data.message + '</h2>');
+});
+
+socket.on('deactivate-alarm-server', function (data) {
+
+	$('#server-response').html('<h2>' + data.message + '</h2>');
+});
+
+socket.on('activate-alarm-server', function (data) {
 
 	$('#server-response').html('<h2>' + data.message + '</h2>');
 });

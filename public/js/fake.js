@@ -1,8 +1,10 @@
 $(document).ready(function () {
 
 	$('#read').click(newRedEvent);
-	$('#door').click(doorOpenEvent);
 	$('#driver').click(driverFailEvent); 
+	$('#alarm-on').click(activateAlarm); 
+	$('#alarm-off').click(deactivateAlarm); 
+	$('#alarm-triggered').click(alarmTriggered); 
 
 });
 
@@ -27,38 +29,69 @@ function newRedEvent() {
 	return false;
 }
 
-function doorOpenEvent() {
-
-	var event = {
+function alarmTriggered() {
+	
+	var alarm = {
 		station_id: 1,
-		alarm_id: 1,
+		alarm_type_id: 1,
 	};
 
 	var data = {
-		event_type: 'door-open',
-		message: 'The door is open',
-		event: event,
-	};
+		alarm_type: 'alarm-triggered',
+		message: 'Alarm has been activated',
+		alarm: alarm,
+	};	
 
-	socket.emit('door-open', data);
-	return false;
+	socket.emit('alarm-triggered', data);
 }
 
 function driverFailEvent() {
 
-	var event = {
+	var alarm = {
 		station_id: 1,
-		alarm_id: 2,
+		alarm_type_id: 2,
 	};
 
 	var data = {
-		event_type: 'driver-fails',
+		alarm_type: 'driver-fails',
 		message: 'The driver is failing',
-		event: event,
+		alarm: alarm,
 	};
 
     socket.emit('driver-fails', data);
     return false;
+}
+
+function activateAlarm() {
+
+	var event = {
+		station_id: 1,
+		alarm_id: 3,
+	};
+
+	var data = {
+		event_type: 'alarm-activated',
+		message: 'Alarm has been activated',
+		event: event,
+	};	
+
+	socket.emit('activate-alarm', data);
+}
+
+function deactivateAlarm() {
+	
+	var event = {
+		station_id: 1,
+		alarm_id: 4,
+	};
+
+	var data = {
+		event_type: 'alarm-activated',
+		message: 'Alarm has been activated',
+		event: event,
+	};	
+
+	socket.emit('deactivate-alarm', data);
 }
 
 function createDecimalData(min, max) {

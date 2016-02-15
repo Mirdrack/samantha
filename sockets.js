@@ -26,13 +26,13 @@ var sockets = function (io, request, config) {
 			});
 		});
 
-		socket.on('door-open', function (data) {
+		socket.on('alarm-triggered', function (data) {
 
-			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+			request.post(config.endPoints.newAlarm, { form : data.alarm }, function (error, response, body) {
 
 				if (!error && response.statusCode == 201) {
 
-					io.sockets.emit('door-open-server', JSON.parse(body));
+					io.sockets.emit('alarm-triggered-server', JSON.parse(body));
 				}
 				else
 					io.sockets.emit('error-server', JSON.parse(body));
@@ -41,7 +41,7 @@ var sockets = function (io, request, config) {
 
 		socket.on('driver-fails', function (data) {
 
-			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+			request.post(config.endPoints.newAlarm, { form : data.alarm }, function (error, response, body) {
 
 				if (!error && response.statusCode == 201) {
 
@@ -81,11 +81,27 @@ var sockets = function (io, request, config) {
 			});
 		});
 
+		socket.on('deactivate-alarm', function() {
+
+			// Request to Rea
+			io.sockets.emit('deactivate-alarm-server', { message: 'Alarm deactivated' });
+			setTimeout(function () {
+
+				io.sockets.emit('activate-alarm-server', { message: 'Alarm activated' });
+			}, 1000 * 60 * 1);
+		});
+
+		socket.on('activate-alarm', function() {
+
+			// Request to Rea
+			io.sockets.emit('activate-alarm-server', { message: 'Alarm activated' });
+		});
+
 		socket.on('disconnect', function () {
 		
 			if(!socket.name) return;
 			delete clients[socket.name];
-			console.log(socket.name + 'has been disconnected.')
+			console.log(socket.name + ' has been disconnected.')
 			updateClients();
 	  	});
 	});
