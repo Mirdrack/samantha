@@ -65,8 +65,10 @@ function driverFailEvent() {
 function activateAlarm() {
 
 	var event = {
+		user_id: 1,
 		station_id: 1,
-		alarm_id: 3,
+		event_type_id: 3,
+		ip_address: '127.0.0.1',
 	};
 
 	var data = {
@@ -80,13 +82,16 @@ function activateAlarm() {
 
 function deactivateAlarm() {
 	
+	console.log('deactivateAlarm');
 	var event = {
+		user_id: 1,
 		station_id: 1,
-		alarm_id: 4,
+		event_type_id: 4,
+		ip_address: '127.0.0.1',
 	};
 
 	var data = {
-		event_type: 'alarm-activated',
+		event_type: 'alarm-deactivated',
 		message: 'Alarm has been activated',
 		event: event,
 	};	

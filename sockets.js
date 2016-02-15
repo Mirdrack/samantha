@@ -81,20 +81,34 @@ var sockets = function (io, request, config) {
 			});
 		});
 
-		socket.on('deactivate-alarm', function() {
+		socket.on('deactivate-alarm', function(data) {
 
-			// Request to Rea
-			io.sockets.emit('deactivate-alarm-server', { message: 'Alarm deactivated' });
-			setTimeout(function () {
+			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-				io.sockets.emit('activate-alarm-server', { message: 'Alarm activated' });
-			}, 1000 * 60 * 1);
+				if (!error && response.statusCode == 201) {
+
+					io.sockets.emit('deactivate-alarm-server', JSON.parse(body));
+					setTimeout(function () {
+
+						reactivateAlarm(data.event);
+					}, config.reactivateAlarm);
+				}
+				else
+					io.sockets.emit('error-server', JSON.parse(body));
+			});
 		});
 
-		socket.on('activate-alarm', function() {
+		socket.on('activate-alarm', function(data) {
 
-			// Request to Rea
-			io.sockets.emit('activate-alarm-server', { message: 'Alarm activated' });
+			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+
+				if (!error && response.statusCode == 201) {
+
+					io.sockets.emit('activate-alarm-server', JSON.parse(body));
+				}
+				else
+					io.sockets.emit('error-server', JSON.parse(body));
+			});
 		});
 
 		socket.on('disconnect', function () {
@@ -109,6 +123,32 @@ var sockets = function (io, request, config) {
 	function updateClients() {
 
 		io.sockets.emit('clients-update', Object.keys(clients));
+	}
+
+	function reactivateAlarm(pastEvent) {
+
+		var event = {
+			user_id: pastEvent.user_id,
+			station_id: pastEvent.station_id,
+			event_type_id: 3,
+			ip_address: pastEvent.ip_address,
+		};
+
+		var data = {
+			event_type: 'alarm-activated',
+			message: 'Alarm has been reactivated',
+			event: event,
+		};
+
+		request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+
+			if (!error && response.statusCode == 201) {
+
+				io.sockets.emit('activate-alarm-server', JSON.parse(body));
+			}
+			else
+				io.sockets.emit('error-server', JSON.parse(body));
+		});
 	}
 };
 
