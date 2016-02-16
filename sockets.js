@@ -15,99 +15,152 @@ var sockets = function (io, request, config) {
 
 		socket.on('new-read', function (data) {
 
-			request.post(config.endPoints.newRead, { form : data.read }, function (error, response, body) {
+			try {
+				
+				request.post(config.endPoints.newRead, { form : data.read }, function (error, response, body) {
 
-				if (!error && response.statusCode == 201) {
+					if (!error && response.statusCode == 201) {
 
-					io.sockets.emit('new-read-server', JSON.parse(body));
-				}
-				else
-					io.sockets.emit('error-server', JSON.parse(body));
-			});
+						io.sockets.emit('new-read-server', JSON.parse(body));
+					}
+					else
+						io.sockets.emit('error-server', JSON.parse(body));
+				});
+			}
+			catch(err) {
+
+			    console.log(err.message);
+			}
+
 		});
 
 		socket.on('alarm-triggered', function (data) {
 
-			request.post(config.endPoints.newAlarm, { form : data.alarm }, function (error, response, body) {
+			try {
 
-				if (!error && response.statusCode == 201) {
+				request.post(config.endPoints.newAlarm, { form : data.alarm }, function (error, response, body) {
 
-					io.sockets.emit('alarm-triggered-server', JSON.parse(body));
-				}
-				else
-					io.sockets.emit('error-server', JSON.parse(body));
-			});
+					if (!error && response.statusCode == 201) {
+
+						io.sockets.emit('alarm-triggered-server', JSON.parse(body));
+					}
+					else
+						io.sockets.emit('error-server', JSON.parse(body));
+				});
+			}
+			catch(err) {
+
+			    console.log(err.message);
+			}
+
 		});
 
 		socket.on('driver-fails', function (data) {
 
-			request.post(config.endPoints.newAlarm, { form : data.alarm }, function (error, response, body) {
+			try {
+			    
+				request.post(config.endPoints.newAlarm, { form : data.alarm }, function (error, response, body) {
 
-				if (!error && response.statusCode == 201) {
+					if (!error && response.statusCode == 201) {
 
-					io.sockets.emit('driver-fails-server', JSON.parse(body));
-				}
-				else
-					io.sockets.emit('error-server', JSON.parse(body));
-			});
+						io.sockets.emit('driver-fails-server', JSON.parse(body));
+					}
+					else
+						io.sockets.emit('error-server', JSON.parse(body));
+				});
+			}
+			catch(err) {
+			    
+			    console.log(err.message);
+			}
 		});
 
 		socket.on('turn-on', function (data) {
 
-			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+			try {
 
-				if (!error && response.statusCode == 201) {
+				request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-					io.sockets.emit('turn-on-server', JSON.parse(body));
-				}
-				else
-				{
-					io.sockets.emit('error-server', JSON.parse(body));
-				}
-			});
+					if (!error && response.statusCode == 201) {
+
+						io.sockets.emit('turn-on-server', JSON.parse(body));
+					}
+					else
+					{
+						io.sockets.emit('error-server', JSON.parse(body));
+					}
+				});
+			}
+			catch(err) {
+
+			    console.log(err.message);
+			}
+			
 		});
 
 		socket.on('turn-off', function (data) {
 
-			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+			try {
 
-				if (!error && response.statusCode == 201) {
+				request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-					io.sockets.emit('turn-off-server', JSON.parse(body));
-				}
-				else
-					io.sockets.emit('error-server', JSON.parse(body));
-			});
+					if (!error && response.statusCode == 201) {
+
+						io.sockets.emit('turn-off-server', JSON.parse(body));
+					}
+					else
+						io.sockets.emit('error-server', JSON.parse(body));
+				});
+			}
+			catch(err) {
+			    
+			    console.log(err.message);
+			}
+
 		});
 
 		socket.on('deactivate-alarm', function(data) {
 
-			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+			try {
 
-				if (!error && response.statusCode == 201) {
+				request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-					io.sockets.emit('deactivate-alarm-server', JSON.parse(body));
-					setTimeout(function () {
+					if (!error && response.statusCode == 201) {
 
-						reactivateAlarm(data.event);
-					}, config.reactivateAlarm);
-				}
-				else
-					io.sockets.emit('error-server', JSON.parse(body));
-			});
+						io.sockets.emit('deactivate-alarm-server', JSON.parse(body));
+						setTimeout(function () {
+
+							reactivateAlarm(data.event);
+						}, config.reactivateAlarm);
+					}
+					else
+						io.sockets.emit('error-server', JSON.parse(body));
+				});
+			}
+			catch(err) {
+			    
+			    console.log(err.message);
+			}
 		});
 
 		socket.on('activate-alarm', function(data) {
 
-			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+			try {
 
-				if (!error && response.statusCode == 201) {
+				request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-					io.sockets.emit('activate-alarm-server', JSON.parse(body));
-				}
-				else
-					io.sockets.emit('error-server', JSON.parse(body));
-			});
+					if (!error && response.statusCode == 201) {
+
+						io.sockets.emit('activate-alarm-server', JSON.parse(body));
+					}
+					else
+						io.sockets.emit('error-server', JSON.parse(body));
+				});
+			}
+			catch(err) {
+
+			    console.log(err.message);
+			}
 		});
 
 		socket.on('disconnect', function () {
@@ -139,15 +192,24 @@ var sockets = function (io, request, config) {
 			event: event,
 		};
 
-		request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-			if (!error && response.statusCode == 201) {
+		try {
 
-				io.sockets.emit('activate-alarm-server', JSON.parse(body));
-			}
-			else
-				io.sockets.emit('error-server', JSON.parse(body));
-		});
+			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+
+				if (!error && response.statusCode == 201) {
+
+					io.sockets.emit('activate-alarm-server', JSON.parse(body));
+				}
+				else
+					io.sockets.emit('error-server', JSON.parse(body));
+			});
+		}
+		catch(err) {
+			
+		    console.log(err.message);
+		}
+
 	}
 };
 
