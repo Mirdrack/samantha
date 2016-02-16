@@ -5,12 +5,13 @@ $(document).ready(function () {
 	$('#alarm-on').click(activateAlarm); 
 	$('#alarm-off').click(deactivateAlarm); 
 	$('#alarm-triggered').click(alarmTriggered); 
+	$('#station-on').click(stationOn); 
+	$('#station-off').click(stationOff); 
 
 });
 
 function newRedEvent() {
 
-	console.log('newRedEvent');
 	var read = {
 		station_id: 1,
 		dynamic_level: createDecimalData(50, 250),
@@ -82,7 +83,6 @@ function activateAlarm() {
 
 function deactivateAlarm() {
 	
-	console.log('deactivateAlarm');
 	var event = {
 		user_id: 1,
 		station_id: 1,
@@ -97,6 +97,42 @@ function deactivateAlarm() {
 	};	
 
 	socket.emit('deactivate-alarm', data);
+}
+
+function stationOn() {
+
+	var event = {
+		user_id: 1,
+		station_id: 1,
+		event_type_id: 1,
+		ip_address: '127.0.0.1',
+	};
+
+	var data = {
+		event_type: 'station-on',
+		message: 'The station has been turned on',
+		event: event,
+	};	
+
+	socket.emit('turn-on', data);
+}
+
+function stationOff() {
+
+	var event = {
+		user_id: 1,
+		station_id: 1,
+		event_type_id: 2,
+		ip_address: '127.0.0.1',
+	};
+
+	var data = {
+		event_type: 'station-off',
+		message: 'The station has been turned off',
+		event: event,
+	};	
+
+	socket.emit('turn-off', data);
 }
 
 function createDecimalData(min, max) {
