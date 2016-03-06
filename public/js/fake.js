@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
 	$('#read').click(newRedEvent);
-	$('#driver').click(driverFailEvent); 
 	$('#alarm-on').click(activateAlarm); 
 	$('#alarm-off').click(deactivateAlarm); 
 	$('#alarm-triggered').click(alarmTriggered); 
@@ -44,23 +43,6 @@ function alarmTriggered() {
 	};	
 
 	socket.emit('alarm-triggered', data);
-}
-
-function driverFailEvent() {
-
-	var alarm = {
-		station_id: 1,
-		alarm_type_id: 2,
-	};
-
-	var data = {
-		alarm_type: 'driver-fails',
-		message: 'The driver is failing',
-		alarm: alarm,
-	};
-
-    socket.emit('driver-fails', data);
-    return false;
 }
 
 function activateAlarm() {

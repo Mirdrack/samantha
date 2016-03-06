@@ -55,26 +55,6 @@ var sockets = function (io, request, config) {
 
 		});
 
-		socket.on('driver-fails', function (data) {
-
-			try {
-			    
-				request.post(config.endPoints.newAlarm, { form : data.alarm }, function (error, response, body) {
-
-					if (!error && response.statusCode == 201) {
-
-						io.sockets.emit('driver-fails-server', JSON.parse(body));
-					}
-					else
-						io.sockets.emit('error-server', JSON.parse(body));
-				});
-			}
-			catch(err) {
-			    
-			    console.log(err.message);
-			}
-		});
-
 		socket.on('turn-on', function (data) {
 
 			try {
@@ -206,7 +186,7 @@ var sockets = function (io, request, config) {
 			});
 		}
 		catch(err) {
-			
+
 		    console.log(err.message);
 		}
 
