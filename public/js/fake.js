@@ -1,9 +1,15 @@
 $(document).ready(function () {
 
 	$('#read').click(newRedEvent);
-	$('#alarm-on').click(activateAlarm); 
-	$('#alarm-off').click(deactivateAlarm); 
-	$('#alarm-triggered').click(alarmTriggered); 
+
+	$('#alarm-on-1').click(activateAlarm_1);
+	$('#alarm-off-1').click(deactivateAlarm_1);
+	$('#alarm-triggered-1').click(alarmTriggered_1);
+
+	$('#alarm-on-2').click(activateAlarm_2);
+	$('#alarm-off-2').click(deactivateAlarm_2);
+	$('#alarm-triggered-2').click(alarmTriggered_2);
+
 	$('#station-on').click(stationOn); 
 	$('#station-off').click(stationOff); 
 
@@ -29,7 +35,7 @@ function newRedEvent() {
 	return false;
 }
 
-function alarmTriggered() {
+function alarmTriggered_1() {
 	
 	var alarm = {
 		station_id: 1,
@@ -45,7 +51,7 @@ function alarmTriggered() {
 	socket.emit('alarm-triggered', data);
 }
 
-function activateAlarm() {
+function activateAlarm_1() {
 
 	var event = {
 		user_id: 1,
@@ -63,7 +69,7 @@ function activateAlarm() {
 	socket.emit('activate-alarm', data);
 }
 
-function deactivateAlarm() {
+function deactivateAlarm_1() {
 	
 	var event = {
 		user_id: 1,
@@ -77,6 +83,58 @@ function deactivateAlarm() {
 		message: 'Alarm has been activated',
 		event: event,
 	};	
+
+	socket.emit('deactivate-alarm', data);
+}
+
+function alarmTriggered_2() {
+
+	var alarm = {
+		station_id: 1,
+		alarm_type_id: 2,
+	};
+
+	var data = {
+		alarm_type: 'alarm-triggered',
+		message: 'Alarm has been activated',
+		alarm: alarm,
+	};
+
+	socket.emit('alarm-triggered', data);
+}
+
+function activateAlarm_2() {
+
+	var event = {
+		user_id: 1,
+		station_id: 1,
+		event_type_id: 5,
+		ip_address: '127.0.0.1',
+	};
+
+	var data = {
+		event_type: 'alarm-activated',
+		message: 'Alarm has been activated',
+		event: event,
+	};
+
+	socket.emit('activate-alarm', data);
+}
+
+function deactivateAlarm_2() {
+
+	var event = {
+		user_id: 1,
+		station_id: 1,
+		event_type_id: 6,
+		ip_address: '127.0.0.1',
+	};
+
+	var data = {
+		event_type: 'alarm-deactivated',
+		message: 'Alarm has been activated',
+		event: event,
+	};
 
 	socket.emit('deactivate-alarm', data);
 }
