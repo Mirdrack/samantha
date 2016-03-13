@@ -10,6 +10,14 @@ $(document).ready(function () {
 	$('#alarm-off-2').click(deactivateAlarm_2);
 	$('#alarm-triggered-2').click(alarmTriggered_2);
 
+	$('#alarm-on-3').click(activateAlarm_3);
+	$('#alarm-off-3').click(deactivateAlarm_3);
+	$('#alarm-triggered-3').click(alarmTriggered_3);
+
+	$('#alarm-on-4').click(activateAlarm_4);
+	$('#alarm-off-4').click(deactivateAlarm_4);
+	$('#alarm-triggered-4').click(alarmTriggered_4);
+
 	$('#station-on').click(stationOn); 
 	$('#station-off').click(stationOff); 
 
@@ -70,12 +78,16 @@ function activateAlarm_1() {
 }
 
 function deactivateAlarm_1() {
+
+	var cooldown = $('#cooldown-1').val();
+	console.log(cooldown); 
 	
 	var event = {
 		user_id: 1,
 		station_id: 1,
 		event_type_id: 4,
 		ip_address: '127.0.0.1',
+		alarm_cooldown: cooldown,
 	};
 
 	var data = {
@@ -123,11 +135,14 @@ function activateAlarm_2() {
 
 function deactivateAlarm_2() {
 
+	var cooldown = $('#cooldown-2').val();
+	
 	var event = {
 		user_id: 1,
 		station_id: 1,
 		event_type_id: 6,
 		ip_address: '127.0.0.1',
+		alarm_cooldown: cooldown,
 	};
 
 	var data = {
@@ -135,6 +150,118 @@ function deactivateAlarm_2() {
 		message: 'Alarm has been activated',
 		event: event,
 	};
+
+	socket.emit('deactivate-alarm', data);
+}
+
+function alarmTriggered_3() {
+	
+	var alarm = {
+		station_id: 1,
+		alarm_type_id: 3,
+	};
+
+	var data = {
+		alarm_type: 'alarm-triggered',
+		message: 'Alarm has been activated',
+		alarm: alarm,
+	};	
+
+	socket.emit('alarm-triggered', data);
+}
+
+function activateAlarm_3() {
+
+	var event = {
+		user_id: 1,
+		station_id: 1,
+		event_type_id: 7,
+		ip_address: '127.0.0.1',
+	};
+
+	var data = {
+		event_type: 'alarm-activated',
+		message: 'Alarm has been activated',
+		event: event,
+	};	
+
+	socket.emit('activate-alarm', data);
+}
+
+function deactivateAlarm_3() {
+
+	var cooldown = $('#cooldown-1').val();
+	console.log(cooldown); 
+	
+	var event = {
+		user_id: 1,
+		station_id: 1,
+		event_type_id: 8,
+		ip_address: '127.0.0.1',
+		alarm_cooldown: cooldown,
+	};
+
+	var data = {
+		event_type: 'alarm-deactivated',
+		message: 'Alarm has been activated',
+		event: event,
+	};	
+
+	socket.emit('deactivate-alarm', data);
+}
+
+function alarmTriggered_4() {
+	
+	var alarm = {
+		station_id: 1,
+		alarm_type_id: 4,
+	};
+
+	var data = {
+		alarm_type: 'alarm-triggered',
+		message: 'Alarm has been activated',
+		alarm: alarm,
+	};	
+
+	socket.emit('alarm-triggered', data);
+}
+
+function activateAlarm_4() {
+
+	var event = {
+		user_id: 1,
+		station_id: 1,
+		event_type_id: 9,
+		ip_address: '127.0.0.1',
+	};
+
+	var data = {
+		event_type: 'alarm-activated',
+		message: 'Alarm has been activated',
+		event: event,
+	};	
+
+	socket.emit('activate-alarm', data);
+}
+
+function deactivateAlarm_4() {
+
+	var cooldown = $('#cooldown-1').val();
+	console.log(cooldown); 
+	
+	var event = {
+		user_id: 1,
+		station_id: 1,
+		event_type_id: 10,
+		ip_address: '127.0.0.1',
+		alarm_cooldown: cooldown,
+	};
+
+	var data = {
+		event_type: 'alarm-deactivated',
+		message: 'Alarm has been activated',
+		event: event,
+	};	
 
 	socket.emit('deactivate-alarm', data);
 }

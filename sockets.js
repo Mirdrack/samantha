@@ -15,28 +15,30 @@ var sockets = function (io, request, config) {
 
 		socket.on('new-read', function (data) {
 
-			try {
-				
-				request.post(config.endPoints.newRead, { form : data.read }, function (error, response, body) {
+			request.post(config.endPoints.newRead, { form : data.read }, function (error, response, body) {
 
-					if (!error && response.statusCode == 201) {
+				if (!error && response.statusCode == 201) {
 
-						io.sockets.emit('new-read-server', JSON.parse(body));
+					io.sockets.emit('new-read-server', JSON.parse(body));
+				}
+				else {
+
+					try {
+						
+						body = JSON.parse(body);					
+						io.sockets.emit('error-server', body);
 					}
-					else
-						io.sockets.emit('error-server', JSON.parse(body));
-				});
-			}
-			catch(err) {
+					catch(err) {
 
-			    console.log(err.message);
-			}
-
+						console.log(body);
+						console.log(err.message);
+					}
+				}
+			});
 		});
 
 		socket.on('alarm-triggered', function (data) {
 
-			try {
 
 				request.post(config.endPoints.newAlarm, { form : data.alarm }, function (error, response, body) {
 
@@ -44,103 +46,118 @@ var sockets = function (io, request, config) {
 
 						io.sockets.emit('alarm-triggered-server', JSON.parse(body));
 					}
-					else
-						io.sockets.emit('error-server', JSON.parse(body));
+					else {
+
+						try {
+
+							body = JSON.parse(body);
+							io.sockets.emit('error-server', body);
+						}
+						catch(err) {
+
+							console.log(body);
+						    console.log(err.message);
+						}
+					}
 				});
-			}
-			catch(err) {
-
-			    console.log(err.message);
-			}
-
 		});
 
 		socket.on('turn-on', function (data) {
 
-			try {
+			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-				request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+				if (!error && response.statusCode == 201) {
 
-					if (!error && response.statusCode == 201) {
+					io.sockets.emit('turn-on-server', JSON.parse(body));
+				}
+				else {
 
-						io.sockets.emit('turn-on-server', JSON.parse(body));
+					try {
+						
+						body = JSON.parse(body);
+						io.sockets.emit('error-server', body);
 					}
-					else
-					{
-						io.sockets.emit('error-server', JSON.parse(body));
-					}
-				});
-			}
-			catch(err) {
+					catch(err) {
 
-			    console.log(err.message);
-			}
-			
+						console.log(body);
+					    console.log(err.message);
+					}
+				}
+			});
 		});
 
 		socket.on('turn-off', function (data) {
 
-			try {
+			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-				request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+				if (!error && response.statusCode == 201) {
 
-					if (!error && response.statusCode == 201) {
-
-						io.sockets.emit('turn-off-server', JSON.parse(body));
+					io.sockets.emit('turn-off-server', JSON.parse(body));
+				}
+				else{
+					try {
+						
+						body = JSON.parse(body);
+						io.sockets.emit('error-server', body);
 					}
-					else
-						io.sockets.emit('error-server', JSON.parse(body));
-				});
-			}
-			catch(err) {
-			    
-			    console.log(err.message);
-			}
-
+					catch(err) {
+					    
+					    console.log(body);
+					    console.log(err.message);
+					}
+				}
+			});
 		});
 
 		socket.on('deactivate-alarm', function(data) {
 
-			try {
+			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-				request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+				if (!error && response.statusCode == 201) {
 
-					if (!error && response.statusCode == 201) {
+					io.sockets.emit('deactivate-alarm-server', data.event);
+					setTimeout(function () {
 
-						io.sockets.emit('deactivate-alarm-server', JSON.parse(body));
-						setTimeout(function () {
+						reactivateAlarm(data.event);
+					}, data.event.alarm_cooldown * 60 * 1000);
+				}
+				else {
+					
+					try {
 
-							reactivateAlarm(data.event);
-						}, config.reactivateAlarm);
+						body = JSON.parse(body);
+						io.sockets.emit('error-server', body);
 					}
-					else
-						io.sockets.emit('error-server', JSON.parse(body));
-				});
-			}
-			catch(err) {
-			    
-			    console.log(err.message);
-			}
+					catch(err) {
+
+						console.log(err.message);
+					}
+				}
+			});
 		});
 
 		socket.on('activate-alarm', function(data) {
 
-			try {
+			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-				request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+				if (!error && response.statusCode == 201) {
 
-					if (!error && response.statusCode == 201) {
+					io.sockets.emit('activate-alarm-server', JSON.parse(body));
+				}
+				else {
 
-						io.sockets.emit('activate-alarm-server', JSON.parse(body));
+					try {
+
+						body = JSON.parse(body);
+						io.sockets.emit('error-server', body);
 					}
-					else
-						io.sockets.emit('error-server', JSON.parse(body));
-				});
-			}
-			catch(err) {
+					catch(err) {
 
-			    console.log(err.message);
-			}
+						console.log(body);
+						console.log(err.message);
+					}
+				}
+			});
 		});
 
 		socket.on('disconnect', function () {
@@ -162,7 +179,7 @@ var sockets = function (io, request, config) {
 		var event = {
 			user_id: pastEvent.user_id,
 			station_id: pastEvent.station_id,
-			event_type_id: 3,
+			event_type_id: parseInt(pastEvent.event_type_id) - 1,
 			ip_address: pastEvent.ip_address,
 		};
 
@@ -172,24 +189,25 @@ var sockets = function (io, request, config) {
 			event: event,
 		};
 
+		request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
 
-		try {
+			if (!error && response.statusCode == 201) {
 
-			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
-
-				if (!error && response.statusCode == 201) {
-
-					io.sockets.emit('activate-alarm-server', JSON.parse(body));
+				io.sockets.emit('activate-alarm-server', data.event);
+			}
+			else {
+				try {
+					
+					body = JSON.parse(body);
+					io.sockets.emit('error-server', body);
 				}
-				else
-					io.sockets.emit('error-server', JSON.parse(body));
-			});
-		}
-		catch(err) {
+				catch(err) {
 
-		    console.log(err.message);
-		}
-
+					console.log(body);
+				    console.log(err.message);
+				}
+			}
+		});
 	}
 };
 
