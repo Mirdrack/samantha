@@ -24,7 +24,7 @@ var sockets = function (io, request, config) {
 				else {
 
 					try {
-						
+
 						body = JSON.parse(body);					
 						io.sockets.emit('error-server', body);
 					}
@@ -115,7 +115,9 @@ var sockets = function (io, request, config) {
 
 				if (!error && response.statusCode == 201) {
 
-					io.sockets.emit('deactivate-alarm-server', data.event);
+					body = JSON.parse(body);
+					io.sockets.emit('deactivate-alarm-server', body.data);
+					// io.sockets.emit('deactivate-alarm-server', data.event);
 					setTimeout(function () {
 
 						reactivateAlarm(data.event);
@@ -130,6 +132,7 @@ var sockets = function (io, request, config) {
 					}
 					catch(err) {
 
+						console.log(body);
 						console.log(err.message);
 					}
 				}
@@ -142,7 +145,8 @@ var sockets = function (io, request, config) {
 
 				if (!error && response.statusCode == 201) {
 
-					io.sockets.emit('activate-alarm-server', JSON.parse(body));
+					body = JSON.parse(body.data);
+					io.sockets.emit('activate-alarm-server', body.data);
 				}
 				else {
 
@@ -193,7 +197,8 @@ var sockets = function (io, request, config) {
 
 			if (!error && response.statusCode == 201) {
 
-				io.sockets.emit('activate-alarm-server', data.event);
+				body = JSON.parse(body);
+				io.sockets.emit('activate-alarm-server', body.data);
 			}
 			else {
 				try {
