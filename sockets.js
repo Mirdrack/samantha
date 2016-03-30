@@ -164,6 +164,30 @@ var sockets = function (io, request, config) {
 			});
 		});
 
+		socket.on('sensor-change', function(data) {
+
+			request.post(config.endPoints.newEvent, { form : data.event }, function (error, response, body) {
+
+				if (!error && response.statusCode == 201) {
+
+					io.sockets.emit('sensor-change-server', body);
+				}
+				else {
+
+					try {
+
+						body = JSON.parse(body);
+						io.sockets.emit('error-server', body);
+					}
+					catch(err) {
+
+						console.log(body);
+						console.log(err.message);
+					}
+				}
+			});
+		});
+
 		socket.on('disconnect', function () {
 		
 			if(!socket.name) return;

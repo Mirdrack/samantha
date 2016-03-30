@@ -19,7 +19,10 @@ $(document).ready(function () {
 	$('#alarm-triggered-4').click(alarmTriggered_4);
 
 	$('#station-on').click(stationOn); 
-	$('#station-off').click(stationOff); 
+	$('#station-off').click(stationOff);
+
+	$('#change-to-on-1').click(changeToOn_1);
+	$('#change-to-off-1').click(changeToOff_1);
 
 });
 
@@ -264,6 +267,46 @@ function deactivateAlarm_4() {
 	};	
 
 	socket.emit('deactivate-alarm', data);
+}
+
+function changeToOn_1() {
+
+	console.log('change-to-on-1');
+
+	var event = {
+		user_id: 1,
+		station_id: 1,
+		event_type_id: 11,
+		ip_address: '127.0.0.1',
+	};
+
+	var data = {
+		event_type: 'sensor-change',
+		message: 'Door has been open',
+		event: event,
+	};	
+
+	socket.emit('sensor-change', data);
+}
+
+function changeToOff_1() {
+
+	console.log('change-to-off-1');
+
+	var event = {
+		user_id: 1,
+		station_id: 1,
+		event_type_id: 12,
+		ip_address: '127.0.0.1',
+	};
+
+	var data = {
+		event_type: 'sensor-change',
+		message: 'Door has been closed',
+		event: event,
+	};	
+
+	socket.emit('sensor-change', data);
 }
 
 function stationOn() {

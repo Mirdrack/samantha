@@ -28,6 +28,11 @@ socket.on('activate-alarm-server', function (data) {
 	$('#server-response').html('<h2>' + data.message + '</h2>');
 });
 
+socket.on('sensor-change-server', function (data) {
+
+	$('#server-response').html('<h2>' + data.message + '</h2>');
+});
+
 socket.on('error-server', function (data) {
 
 	$('#server-response').html('<h2>' + data.error + '</h2>');
