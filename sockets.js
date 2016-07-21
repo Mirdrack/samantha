@@ -145,7 +145,7 @@ var sockets = function (io, request, config) {
 
 				if (!error && response.statusCode == 201) {
 
-					body = JSON.parse(body.data);
+					body = JSON.parse(body);
 					io.sockets.emit('activate-alarm-server', body.data);
 				}
 				else {
